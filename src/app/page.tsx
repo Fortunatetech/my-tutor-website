@@ -3,6 +3,8 @@ import Hero from '@/components/hero/Hero';
 import Card from '@/components/ui/Card';
 import TestimonialSlider from '@/components/testimonials/TestimonialSlider';
 import Link from 'next/link';
+import TrustRow from '@/components/TrustRow';
+import CaseStudiesSection from '@/components/CaseStudiesSection';
 
 export default function HomePage() {
   const services = [
@@ -18,10 +20,15 @@ export default function HomePage() {
     <div className="space-y-16">
       <Hero />
 
+      {/* TrustRow inserted directly below hero */}
+      <section className="container mx-auto px-6 lg:px-8">
+        <TrustRow />
+      </section>
+
       <section className="py-12 container mx-auto px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-brand-900 text-center mb-8">What I offer</h2>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map(s => (
+          {services.map((s) => (
             <Link key={s.title} href={s.href}>
               <Card className="hover:shadow-xl transition-shadow transform hover:-translate-y-1">
                 <div className="flex items-start gap-4">
@@ -43,6 +50,9 @@ export default function HomePage() {
           <TestimonialSlider />
         </div>
       </section>
+
+      {/* Case studies added here */}
+      <CaseStudiesSection />
     </div>
   );
 }

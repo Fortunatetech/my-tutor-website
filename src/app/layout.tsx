@@ -4,6 +4,9 @@ import { ReactNode } from 'react';
 import Header from '@/components/nav/Header';
 import ThemeProviderWrapper from '@/components/ThemeProviderWrapper';
 import PageTransition from '@/components/PageTransition';
+import BookingProvider from '@/components/booking/BookingProvider';
+import FloatingCTA from '@/components/ui/FloatingCTA'
+import BookingModal from '@/components/booking/BookingModal';
 
 export const metadata = {
   title: 'TutorCoach',
@@ -15,10 +18,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className="min-h-screen flex flex-col">
         <ThemeProviderWrapper>
-          <Header />
-          <main className="flex-1 container mx-auto px-6 lg:px-8 py-8">
-            <PageTransition>{children}</PageTransition>
-          </main>
+          <BookingProvider>
+            <Header />
+            <main className="flex-1 container mx-auto px-6 lg:px-8 py-8">
+              <PageTransition>{children}</PageTransition>
+            </main>
+
+            {/* Floating CTA and Booking modal are global inside BookingProvider */}
+            <FloatingCTA />
+            <BookingModal />
+          </BookingProvider>
         </ThemeProviderWrapper>
 
         <footer className="bg-brand-900 text-white">
