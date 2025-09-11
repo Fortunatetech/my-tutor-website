@@ -1,26 +1,117 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+/* src/app/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-900: #0B2545;
+  --brand-500: #0FB5A6;
+  --accent-500: #FF8A5B;
+  --muted-600: #6B7280;
+  --bg-50: #F7FBFC;
+  --surface-100: #FFFFFF;
+  --focus: #A7F3D0;
+  --max-width: 1200px;
+  --text-default: #111827;
+  --card-bg: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark theme overrides when .dark is on <html> or <body> */
+.dark {
+  --text-default: #e6eef1;
+  --card-bg: #0f1724;
+  --bg-50: #071229;
+  --muted-600: #94a3b8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Tailwind layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global base */
+html, body, #__next { height: 100%; }
+
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background-color: var(--bg-50);
+  color: var(--text-default);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading font helper */
+.h1, h1 { font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+
+/* Hero helper */
+.hero-bg {
+  background-image: radial-gradient(circle at 12% 10%, rgba(15,181,166,0.12), transparent 18%), linear-gradient(180deg, rgba(11,37,69,0.95), rgba(11,37,69,0.86));
+}
+
+/* Buttons */
+.btn-primary {
+  @apply inline-flex items-center gap-3 px-5 py-3 rounded-2xl font-semibold shadow-lg;
+  background: linear-gradient(90deg, var(--accent-500), #ff7b53);
+  color: white;
+}
+.btn-primary:hover { transform: translateY(-3px); }
+
+/* Card */
+.card-surface {
+  background-color: var(--card-bg);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+}
+
+/* small responsive container */
+.container { max-width: var(--max-width); margin-left: auto; margin-right: auto; }
+
+/* focus */
+:focus { outline: none; box-shadow: 0 0 0 4px rgba(15,181,166,0.12); }
+
+
+
+
+
+
+
+/* @import 'tailwindcss'; */
+
+
+/* CSS variables + Tailwind layers */
+/* :root {
+  --brand-900: #0B2545;
+  --brand-500: #0FB5A6;
+  --accent-500: #FF8A5B;
+  --text-900: #111827;
+  --muted-600: #6B7280;
+  --bg-50: #F7FBFC;
+  --surface-100: #FFFFFF;
+  --focus: #A7F3D0;
+}
+
+
+html, body, #__next {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-50);
+  color: var(--text-900);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
 }
+
+.btn-primary {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium;
+  background: var(--accent-500);
+  color: white;
+}
+
+.bg-bg-50 {
+  background-color: var(--bg-50);
+}
+.text-brand-900 {
+  color: var(--brand-900);
+}
+.text-neutral-600 {
+  color: var(--muted-600);
+} */
