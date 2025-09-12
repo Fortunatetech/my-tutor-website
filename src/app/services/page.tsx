@@ -1,9 +1,6 @@
 // src/app/services/page.tsx
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import ScrollReveal from '@/components/ScrollReveal';
-import ServicesFAQ from './faq';
-import { SERVICES } from '@/data/services';
+import TrustRow from '@/components/TrustRow';
+import ServicesGrid from '@/components/services/ServiceGrid';
 
 export default function ServicesPage() {
   return (
@@ -11,43 +8,72 @@ export default function ServicesPage() {
       <section className="py-8">
         <div className="container mx-auto px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-brand-900 mb-4">Services</h1>
-          <p className="text-white mb-6">Choose a focused service below — each offering tailored one-on-one sessions and project support.</p>
+          <p className="text-neutral-600 mb-6">Choose the right service for your goals — each offering one-on-one sessions and project support.</p>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((s, i) => (
-              <ScrollReveal key={s.id} delay={i * 0.06}>
-                <Card className="p-6 hover:shadow-xl transition-shadow transform hover:-translate-y-1">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-brand-900/5 flex items-center justify-center text-brand-500 font-semibold">→</div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-brand-900">{s.title}</h3>
-                      <p className="text-neutral-600 mt-2">{s.desc}</p>
-                      <div className="mt-4 flex items-center justify-between">
-                        <span className="text-sm text-neutral-600">{s.price ?? 'From $25/hr'}</span>
-                        <Button variant="secondary" href={`/services/${s.id}`}>Learn</Button>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </ScrollReveal>
-            ))}
+          <TrustRow />
+
+          <div className="mt-6">
+            <ServicesGrid />
           </div>
-        </div>
-      </section>
-
-      <section className="py-8 bg-bg-50">
-        <div className="container mx-auto px-6 lg:px-8">
-          <ScrollReveal>
-            <h2 className="text-2xl font-semibold text-brand-900 mb-4">Why learners pick me</h2>
-            <p className="text-neutral-600">Tailored lessons, clear goals, and measurable outcomes — built to help you grow.</p>
-          </ScrollReveal>
-
-          <ServicesFAQ />
         </div>
       </section>
     </div>
   );
 }
+
+
+
+
+// src/app/services/page.tsx
+// import Card from '@/components/ui/Card';
+// import Button from '@/components/ui/Button';
+// import ScrollReveal from '@/components/ScrollReveal';
+// import ServicesFAQ from './faq';
+// import { SERVICES } from '@/data/services';
+
+// export default function ServicesPage() {
+//   return (
+//     <div className="space-y-10">
+//       <section className="py-8">
+//         <div className="container mx-auto px-6 lg:px-8">
+//           <h1 className="text-3xl font-bold text-brand-900 mb-4">Services</h1>
+//           <p className="text-white mb-6">Choose a focused service below — each offering tailored one-on-one sessions and project support.</p>
+
+//           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+//             {SERVICES.map((s, i) => (
+//               <ScrollReveal key={s.id} delay={i * 0.06}>
+//                 <Card className="p-6 hover:shadow-xl transition-shadow transform hover:-translate-y-1">
+//                   <div className="flex items-start gap-4">
+//                     <div className="w-12 h-12 rounded-lg bg-brand-900/5 flex items-center justify-center text-brand-500 font-semibold">→</div>
+//                     <div className="flex-1">
+//                       <h3 className="text-lg font-semibold text-brand-900">{s.title}</h3>
+//                       <p className="text-neutral-600 mt-2">{s.desc}</p>
+//                       <div className="mt-4 flex items-center justify-between">
+//                         <span className="text-sm text-neutral-600">{s.price ?? 'From $25/hr'}</span>
+//                         <Button variant="secondary" href={`/services/${s.id}`}>Learn</Button>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </Card>
+//               </ScrollReveal>
+//             ))}
+//           </div>
+//         </div>
+//       </section>
+
+//       <section className="py-8 bg-bg-50">
+//         <div className="container mx-auto px-6 lg:px-8">
+//           <ScrollReveal>
+//             <h2 className="text-2xl font-semibold text-brand-900 mb-4">Why learners pick me</h2>
+//             <p className="text-neutral-600">Tailored lessons, clear goals, and measurable outcomes — built to help you grow.</p>
+//           </ScrollReveal>
+
+//           <ServicesFAQ />
+//         </div>
+//       </section>
+//     </div>
+//   );
+// }
 
 
 

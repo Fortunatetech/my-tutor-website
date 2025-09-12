@@ -1,145 +1,145 @@
-// src/app/api/contact/route.ts
-import nodemailer from 'nodemailer';
-import { NextResponse } from 'next/server';
+// // src/app/api/contact/route.ts
+// import nodemailer from 'nodemailer';
+// import { NextResponse } from 'next/server';
 
-const {
-  SMTP_HOST,
-  SMTP_PORT,
-  SMTP_USER,
-  SMTP_PASS,
-  CONTACT_RECIPIENT,
-  CONTACT_SENDER,
-} = process.env;
+// const {
+//   SMTP_HOST,
+//   SMTP_PORT,
+//   SMTP_USER,
+//   SMTP_PASS,
+//   CONTACT_RECIPIENT,
+//   CONTACT_SENDER,
+// } = process.env;
 
-function isValidEmail(email?: string) {
-  if (!email) return false;
-  // simple email validation
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+// function isValidEmail(email?: string) {
+//   if (!email) return false;
+//   // simple email validation
+//   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+// }
 
-export async function POST(req: Request) {
-  try {
-    if (!CONTACT_RECIPIENT) {
-      return NextResponse.json({ success: false, error: 'Recipient email is not configured.' }, { status: 500 });
-    }
+// export async function POST(req: Request) {
+//   try {
+//     if (!CONTACT_RECIPIENT) {
+//       return NextResponse.json({ success: false, error: 'Recipient email is not configured.' }, { status: 500 });
+//     }
 
-    const body = await req.json().catch(() => null);
-    if (!body) {
-      return NextResponse.json({ success: false, error: 'Invalid JSON body.' }, { status: 400 });
-    }
+//     const body = await req.json().catch(() => null);
+//     if (!body) {
+//       return NextResponse.json({ success: false, error: 'Invalid JSON body.' }, { status: 400 });
+//     }
 
-    const name = String(body.name || '').trim();
-    const email = String(body.email || '').trim();
-    const message = String(body.message || '').trim();
-    const source = String(body.source || 'website contact form').trim();
+//     const name = String(body.name || '').trim();
+//     const email = String(body.email || '').trim();
+//     const message = String(body.message || '').trim();
+//     const source = String(body.source || 'website contact form').trim();
 
-    // Basic validation
-    if (!name || !email || !message) {
-      return NextResponse.json({ success: false, error: 'Please provide name, email and message.' }, { status: 400 });
-    }
-    if (!isValidEmail(email)) {
-      return NextResponse.json({ success: false, error: 'Invalid email address.' }, { status: 400 });
-    }
+//     // Basic validation
+//     if (!name || !email || !message) {
+//       return NextResponse.json({ success: false, error: 'Please provide name, email and message.' }, { status: 400 });
+//     }
+//     if (!isValidEmail(email)) {
+//       return NextResponse.json({ success: false, error: 'Invalid email address.' }, { status: 400 });
+//     }
 
-    // If SMTP not configured, return helpful error
-    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
-      // As a friendly fallback in development you could log to console
-      console.warn('SMTP not configured. Received contact request:', { name, email, message });
-      return NextResponse.json({ success: false, error: 'SMTP not configured. Check server env.' }, { status: 500 });
-    }
+//     // If SMTP not configured, return helpful error
+//     if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+//       // As a friendly fallback in development you could log to console
+//       console.warn('SMTP not configured. Received contact request:', { name, email, message });
+//       return NextResponse.json({ success: false, error: 'SMTP not configured. Check server env.' }, { status: 500 });
+//     }
 
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: Number(SMTP_PORT),
-      secure: Number(SMTP_PORT) === 465,
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS,
-      },
-    });
+//     // Create transporter
+//     const transporter = nodemailer.createTransport({
+//       host: SMTP_HOST,
+//       port: Number(SMTP_PORT),
+//       secure: Number(SMTP_PORT) === 465,
+//       auth: {
+//         user: SMTP_USER,
+//         pass: SMTP_PASS,
+//       },
+//     });
 
-    const submittedAt = new Date().toISOString();
+//     const submittedAt = new Date().toISOString();
 
-    // Construct a constructive email body (plain text + HTML)
-    const subject = `New message from ${name} — via Contact Form`;
-    const textBody = `
-New contact form message
-------------------------
-Name: ${name}
-Email: ${email}
-Source: ${source}
-Submitted: ${submittedAt}
+//     // Construct a constructive email body (plain text + HTML)
+//     const subject = `New message from ${name} — via Contact Form`;
+//     const textBody = `
+// New contact form message
+// ------------------------
+// Name: ${name}
+// Email: ${email}
+// Source: ${source}
+// Submitted: ${submittedAt}
 
-Message:
-${message}
+// Message:
+// ${message}
 
----
-Suggested next steps:
-1) Reply to the sender (use a friendly opening, acknowledge their main point).
-2) If they ask for booking, propose 2-3 available times and link to your booking page: /booking
-3) For project or resume requests, ask for attachments (resume, brief, sample work).
-4) Add the task to your tracker and follow up within 24-48 hours.
-`;
+// ---
+// Suggested next steps:
+// 1) Reply to the sender (use a friendly opening, acknowledge their main point).
+// 2) If they ask for booking, propose 2-3 available times and link to your booking page: /booking
+// 3) For project or resume requests, ask for attachments (resume, brief, sample work).
+// 4) Add the task to your tracker and follow up within 24-48 hours.
+// `;
 
-    const htmlBody = `
-      <div style="font-family:system-ui, Arial, sans-serif; color:#111;">
-        <h2>New contact form message</h2>
-        <p><strong>Name:</strong> ${name}<br/>
-        <strong>Email:</strong> <a href="mailto:${email}">${email}</a><br/>
-        <strong>Source:</strong> ${source}<br/>
-        <strong>Submitted:</strong> ${submittedAt}</p>
+//     const htmlBody = `
+//       <div style="font-family:system-ui, Arial, sans-serif; color:#111;">
+//         <h2>New contact form message</h2>
+//         <p><strong>Name:</strong> ${name}<br/>
+//         <strong>Email:</strong> <a href="mailto:${email}">${email}</a><br/>
+//         <strong>Source:</strong> ${source}<br/>
+//         <strong>Submitted:</strong> ${submittedAt}</p>
 
-        <h3>Message</h3>
-        <div style="white-space:pre-wrap; background:#f7f7f7; padding:12px; border-radius:6px; border:1px solid #eee;">
-          ${escapeHtml(message)}
-        </div>
+//         <h3>Message</h3>
+//         <div style="white-space:pre-wrap; background:#f7f7f7; padding:12px; border-radius:6px; border:1px solid #eee;">
+//           ${escapeHtml(message)}
+//         </div>
 
-        <h3 style="margin-top:18px;">Suggested next steps</h3>
-        <ol>
-          <li>Reply to the sender to acknowledge receipt and ask any clarifying question.</li>
-          <li>If they requested tutoring/booking, propose 2–3 times and include <a href="${getSiteUrl()}/booking">booking link</a>.</li>
-          <li>For resume or project requests, ask for attachments (resume, brief or project files).</li>
-          <li>Follow up inside 24–48 hours and log the lead in your tracker.</li>
-        </ol>
+//         <h3 style="margin-top:18px;">Suggested next steps</h3>
+//         <ol>
+//           <li>Reply to the sender to acknowledge receipt and ask any clarifying question.</li>
+//           <li>If they requested tutoring/booking, propose 2–3 times and include <a href="${getSiteUrl()}/booking">booking link</a>.</li>
+//           <li>For resume or project requests, ask for attachments (resume, brief or project files).</li>
+//           <li>Follow up inside 24–48 hours and log the lead in your tracker.</li>
+//         </ol>
 
-        <hr/>
-        <small style="color:#666">This message was generated by your site contact form.</small>
-      </div>
-    `;
+//         <hr/>
+//         <small style="color:#666">This message was generated by your site contact form.</small>
+//       </div>
+//     `;
 
-    // Send
-    const info = await transporter.sendMail({
-      from: CONTACT_SENDER || SMTP_USER,
-      to: CONTACT_RECIPIENT,
-      replyTo: email,
-      subject,
-      text: textBody,
-      html: htmlBody,
-    });
+//     // Send
+//     const info = await transporter.sendMail({
+//       from: CONTACT_SENDER || SMTP_USER,
+//       to: CONTACT_RECIPIENT,
+//       replyTo: email,
+//       subject,
+//       text: textBody,
+//       html: htmlBody,
+//     });
 
-    // Optionally log for debugging
-    console.info('Contact email sent:', info && info.messageId);
+//     // Optionally log for debugging
+//     console.info('Contact email sent:', info && info.messageId);
 
-    return NextResponse.json({ success: true });
-  } catch (err: any) {
-    console.error('Contact API error:', err);
-    return NextResponse.json({ success: false, error: 'Server error sending email.' }, { status: 500 });
-  }
-}
+//     return NextResponse.json({ success: true });
+//   } catch (err: any) {
+//     console.error('Contact API error:', err);
+//     return NextResponse.json({ success: false, error: 'Server error sending email.' }, { status: 500 });
+//   }
+// }
 
-// small helpers
-function escapeHtml(str: string) {
-  return str
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
+// // small helpers
+// function escapeHtml(str: string) {
+//   return str
+//     .replaceAll('&', '&amp;')
+//     .replaceAll('<', '&lt;')
+//     .replaceAll('>', '&gt;')
+//     .replaceAll('"', '&quot;')
+//     .replaceAll("'", '&#39;');
+// }
 
-function getSiteUrl() {
-  // Use VERCEL_URL in prod, fallback to localhost
-  const host = process.env.VERCEL_URL || process.env.SITE_URL || 'http://localhost:3000';
-  return host.startsWith('http') ? host : `https://${host}`;
-}
+// function getSiteUrl() {
+//   // Use VERCEL_URL in prod, fallback to localhost
+//   const host = process.env.VERCEL_URL || process.env.SITE_URL || 'http://localhost:3000';
+//   return host.startsWith('http') ? host : `https://${host}`;
+// }

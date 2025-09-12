@@ -54,7 +54,7 @@ export default function Hero() {
             <span className="inline-block">✔️ Flexible scheduling • ✔️ Tailored lessons</span>
           </motion.div>
 
-          {/* Microcopy under CTA required */}
+            {/* Microcopy under CTA required */}
           <motion.div
             className="mt-3 text-sm text-white/80"
             initial={{ opacity: 0 }}

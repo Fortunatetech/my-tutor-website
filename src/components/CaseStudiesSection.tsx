@@ -17,6 +17,16 @@ export default function CaseStudiesSection() {
             body="Built a Power BI dashboard that reduced reporting time by 70% and helped the owner spot a pricing issue."
             href="/case-study/powerbi-report"
           />
+            <CaseStudyCard
+            title="Data report for small business"
+            body="Built a Power BI dashboard that reduced reporting time by 70% and helped the owner spot a pricing issue."
+            href="/case-study/powerbi-report"
+          />
+            <CaseStudyCard
+            title="Data report for small business"
+            body="Built a Power BI dashboard that reduced reporting time by 70% and helped the owner spot a pricing issue."
+            href="/case-study/powerbi-report"
+          />
         </div>
       </div>
     </section>
