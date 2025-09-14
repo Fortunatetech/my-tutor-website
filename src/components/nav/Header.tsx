@@ -38,7 +38,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           {/* open booking modal instead of direct href */}
-          <button onClick={() => openBooking()} className="px-4 py-2 rounded-lg bg-brand-500 text-white">
+          <button onClick={() => openBooking()} className="px-4 py-2 rounded-lg bg-orange-500 text-white">
             Book Now
           </button>
 
