@@ -1,39 +1,48 @@
 // src/components/booking/BookingProvider.tsx
 'use client';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-import { createContext, ReactNode, useContext, useState } from 'react';
-
-type Prefill = { service?: string; name?: string; email?: string } | null;
-
-type BookingContextType = {
-  openBooking: (prefill?: Prefill) => void;
-  closeBooking: () => void;
-  isOpen: boolean;
-  prefill: Prefill;
+type BookingPrefill = {
+  service?: string;
+  audience?: string;
+  pack?: string;
+  name?: string;
+  email?: string;
 };
 
-const BookingContext = createContext<BookingContextType | undefined>(undefined);
+type BookingContextValue = {
+  openBooking: (prefill?: BookingPrefill) => void;
+  closeBooking: () => void;
+  isOpen: boolean;
+  prefill?: BookingPrefill;
+};
 
-export function useBooking() {
-  const ctx = useContext(BookingContext);
-  if (!ctx) throw new Error('useBooking must be used inside BookingProvider');
-  return ctx;
-}
+const BookingContext = createContext<BookingContextValue | undefined>(undefined);
 
-export default function BookingProvider({ children }: { children: ReactNode }) {
+export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [prefill, setPrefill] = useState<Prefill>(null);
+  const [prefill, setPrefill] = useState<BookingPrefill | undefined>(undefined);
 
-  function openBooking(p?: Prefill) {
-    setPrefill(p ?? null);
+  function openBooking(p?: BookingPrefill) {
+    setPrefill(p ?? undefined);
     setIsOpen(true);
   }
   function closeBooking() {
     setIsOpen(false);
-    setPrefill(null);
+    // keep prefill or clear depending on your UX — we'll keep it
   }
 
-  const value = { openBooking, closeBooking, isOpen, prefill };
+  return (
+    <BookingContext.Provider value={{ openBooking, closeBooking, isOpen, prefill }}>
+      {children}
+    </BookingContext.Provider>
+  );
+}
 
-  return <BookingContext.Provider value={value}>{children}</BookingContext.Provider>;
+export function useBooking() {
+  const ctx = useContext(BookingContext);
+  if (!ctx) {
+    throw new Error('useBooking must be used within BookingProvider');
+  }
+  return ctx;
 }

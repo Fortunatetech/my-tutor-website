@@ -1,18 +1,15 @@
 // src/app/services/[id]/page.tsx
 import { notFound } from 'next/navigation';
-import ScrollReveal from '@/components/ScrollReveal';
-import Accordion from '@/components/ui/Accordion';
-import {
-  Service
-} from '@/data/services';
 import { SERVICES } from '@/data/services';
 import ServiceHeader from '@/components/services/ServiceDetailSections/ServiceHeader';
-import WhatWeCover from '@/components/services/ServiceDetailSections/WhatWeCover';
+import AudienceChooser from '@/components/services/AudienceChooser';
+import ServiceAudienceSection from '@/components/services/ServiceAudienceSection';
 import LessonPlan from '@/components/services/ServiceDetailSections/LessonPlan';
-import WhatSetsApart from '@/components/services/ServiceDetailSections/WhatSetsApart';
 import WhoIsThisFor from '@/components/services/ServiceDetailSections/WhoIsThisFor';
 import PricingAndPacks from '@/components/services/ServiceDetailSections/PricingAndPacks';
 import SuccessStories from '@/components/services/ServiceDetailSections/SuccessStories';
+import ScrollReveal from '@/components/ScrollReveal';
+import Accordion from '@/components/ui/Accordion';
 import { FAQ_BY_SERVICE } from '../faq-by-service';
 
 type Props = {
@@ -20,10 +17,9 @@ type Props = {
 };
 
 export default async function ServiceDetail({ params }: Props) {
-  // some Next versions provide params as a thenable — await to be safe
   const p = (await params) as { id: string };
   const id = p?.id;
-  const service = SERVICES.find((s) => s.id === id) as Service | undefined;
+  const service = SERVICES.find((s) => s.id === id);
 
   if (!service) return notFound();
 
@@ -32,31 +28,43 @@ export default async function ServiceDetail({ params }: Props) {
   return (
     <section className="py-16">
       <div className="container mx-auto px-6 lg:px-8 max-w-5xl">
+        {/* Header: title + subservices + price/book (top-right) */}
         <ScrollReveal>
           <ServiceHeader service={service} />
         </ScrollReveal>
 
-        <ScrollReveal delay={0.06}>
-          <WhatWeCover items={service.whatWeCover} />
-        </ScrollReveal>
+        {/* Audience chooser (chips) — anchors to sections */}
+        <AudienceChooser service={service} initial={service.audienceSections?.[0]?.key} />
 
-        <ScrollReveal delay={0.12}>
+        {/* Audience specific sections (Kids / Students / Professionals) */}
+        {service.audienceSections?.map((sec) => (
+          <ScrollReveal key={sec.key}>
+            <ServiceAudienceSection serviceId={service.id} section={sec} />
+          </ScrollReveal>
+        ))}
+
+        {/* A typical lesson plan */}
+        <ScrollReveal delay={0.06}>
           <LessonPlan plan={service.lessonPlan} />
         </ScrollReveal>
 
-        <ScrollReveal delay={0.18}>
-          <WhatSetsApart items={service.whatSetsApart} />
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.22}>
+        {/* Who is this lesson for? */}
+        <ScrollReveal delay={0.12}>
           <WhoIsThisFor items={service.audience} />
         </ScrollReveal>
 
-        <ScrollReveal delay={0.26}>
+        {/* Pricing & packs */}
+        <ScrollReveal delay={0.18}>
           <PricingAndPacks service={service} />
         </ScrollReveal>
 
-        <ScrollReveal delay={0.3}>
+        {/* Success stories */}
+        <ScrollReveal delay={0.22}>
+          <SuccessStories stories={service.successStories} />
+        </ScrollReveal>
+
+        {/* FAQ */}
+        <ScrollReveal delay={0.26}>
           <div className="mb-10">
             {faqs.length > 0 && (
               <>
@@ -66,14 +74,11 @@ export default async function ServiceDetail({ params }: Props) {
             )}
           </div>
         </ScrollReveal>
-
-        <ScrollReveal delay={0.34}>
-          <SuccessStories stories={service.successStories} />
-        </ScrollReveal>
       </div>
     </section>
   );
 }
+
 
 
 // src/app/services/[id]/page.tsx
