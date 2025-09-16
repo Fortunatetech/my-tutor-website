@@ -1,15 +1,19 @@
-import './globals.css';
-import { ReactNode } from 'react';
-import Header from '@/components/nav/Header';
-import ThemeProviderWrapper from '@/components/ThemeProviderWrapper';
-import PageTransition from '@/components/PageTransition';
-import {BookingProvider} from '@/components/booking/BookingProvider';
-import FloatingCTA from '@/components/ui/FloatingCTA';
-import BookingModal from '@/components/booking/BookingModal';
+import "./globals.css";
+import { ReactNode } from "react";
+import Header from "@/components/nav/Header";
+import ThemeProviderWrapper from "@/components/ThemeProviderWrapper";
+import PageTransition from "@/components/PageTransition";
+import { BookingProvider } from "@/components/booking/BookingProvider";
+import FloatingCTA from "@/components/ui/FloatingCTA";
+import BookingModal from "@/components/booking/BookingModal";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
 
 export const metadata = {
-  title: 'TutorCoach',
-  description: 'Personal Tutor & Coach – Academic, Tech & Career Services',
+  title: "TutorCoach",
+  description: "Personal Tutor & Coach – Academic, Tech & Career Services",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -19,7 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <ThemeProviderWrapper>
           <BookingProvider>
             <Header />
-            <main className="flex-1 container mx-auto px-6 lg:px-8 py-8">
+            <main className="flex-1 ">
               <PageTransition>{children}</PageTransition>
             </main>
 
@@ -31,7 +35,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </BookingProvider>
         </ThemeProviderWrapper>
 
-        <footer className="bg-brand-900 text-white mt-8">
+        <footer className="bg-brand-900 dark:text-white mt-8 border-t">
           <div className="container mx-auto px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
               <h4 className="font-semibold mb-2">Services</h4>

@@ -1,15 +1,17 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 /* src/app/globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap");
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --brand-900: #0B2545;
-  --brand-500: #0FB5A6;
-  --accent-500: #FF8A5B;
-  --muted-600: #6B7280;
-  --bg-50: #F7FBFC;
-  --surface-100: #FFFFFF;
-  --focus: #A7F3D0;
+  --brand-900: #0b2545;
+  --brand-500: #0fb5a6;
+  --accent-500: #ff8a5b;
+  --muted-600: #6b7280;
+  --bg-50: #f7fbfc;
+  --surface-100: #ffffff;
+  --focus: #a7f3d0;
   --max-width: 1200px;
   --text-default: #111827;
   --card-bg: #ffffff;
@@ -23,13 +25,12 @@
   --muted-600: #94a3b8;
 }
 
-/* Tailwind layers */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Global base */
-html, body, #__next { height: 100%; }
+html,
+body,
+#__next {
+  height: 100%;
+}
 
 body {
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
@@ -40,11 +41,19 @@ body {
 }
 
 /* Heading font helper */
-.h1, h1 { font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+.h1,
+h1 {
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
 
 /* Hero helper */
 .hero-bg {
-  background-image: radial-gradient(circle at 12% 10%, rgba(15,181,166,0.12), transparent 18%), linear-gradient(180deg, rgba(11,37,69,0.95), rgba(11,37,69,0.86));
+  background-image: radial-gradient(
+      circle at 12% 10%,
+      rgba(15, 181, 166, 0.12),
+      transparent 18%
+    ),
+    linear-gradient(180deg, rgba(11, 37, 69, 0.95), rgba(11, 37, 69, 0.86));
 }
 
 /* Buttons */
@@ -53,29 +62,31 @@ body {
   background: linear-gradient(90deg, var(--accent-500), #ff7b53);
   color: white;
 }
-.btn-primary:hover { transform: translateY(-3px); }
+.btn-primary:hover {
+  transform: translateY(-3px);
+}
 
 /* Card */
 .card-surface {
   background-color: var(--card-bg);
   border-radius: 0.75rem;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
 }
 
 /* small responsive container */
-.container { max-width: var(--max-width); margin-left: auto; margin-right: auto; }
+.container {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* focus */
-:focus { outline: none; box-shadow: 0 0 0 4px rgba(15,181,166,0.12); }
-
-
-
-
-
-
+:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(15, 181, 166, 0.12);
+}
 
 /* @import 'tailwindcss'; */
-
 
 /* CSS variables + Tailwind layers */
 /* :root {

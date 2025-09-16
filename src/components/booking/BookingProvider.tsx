@@ -1,6 +1,6 @@
 // src/components/booking/BookingProvider.tsx
-'use client';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+"use client";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 type BookingPrefill = {
   service?: string;
@@ -8,6 +8,7 @@ type BookingPrefill = {
   pack?: string;
   name?: string;
   email?: string;
+  message?: string;
 };
 
 type BookingContextValue = {
@@ -17,7 +18,9 @@ type BookingContextValue = {
   prefill?: BookingPrefill;
 };
 
-const BookingContext = createContext<BookingContextValue | undefined>(undefined);
+const BookingContext = createContext<BookingContextValue | undefined>(
+  undefined
+);
 
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +36,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <BookingContext.Provider value={{ openBooking, closeBooking, isOpen, prefill }}>
+    <BookingContext.Provider
+      value={{ openBooking, closeBooking, isOpen, prefill }}
+    >
       {children}
     </BookingContext.Provider>
   );
@@ -42,7 +47,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
 export function useBooking() {
   const ctx = useContext(BookingContext);
   if (!ctx) {
-    throw new Error('useBooking must be used within BookingProvider');
+    throw new Error("useBooking must be used within BookingProvider");
   }
   return ctx;
 }

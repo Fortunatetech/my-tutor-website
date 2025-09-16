@@ -16,7 +16,7 @@ export default function ServiceCard({ service }: { service: Service }) {
   return (
     <Card className="h-full flex flex-col p-6 transition-transform hover:shadow-xl hover:-translate-y-1 overflow-visible">
       <div className="flex items-start gap-4">
-        <div className="relative flex-shrink-0 w-12 h-12 rounded-lg bg-brand-900/5 flex items-center justify-center text-brand-500">
+        <div className="relative flex-shrink-0 w-12 h-12 rounded-lg bg-brand-900/5 dark:bg-neutral-700 flex items-center justify-center text-brand-500">
           <ServiceIcon name={service.icon} />
         </div>
 
