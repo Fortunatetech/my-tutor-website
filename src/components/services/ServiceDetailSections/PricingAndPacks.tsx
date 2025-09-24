@@ -21,7 +21,7 @@ export default function PricingAndPacks({ service }: { service: Service }) {
           </div>
 
           <div>
-            <BookServiceButton serviceId={service.id} className="px-4 py-3 rounded-lg bg-brand-500 text-white">
+            <BookServiceButton serviceId={service.id} className="px-4 py-3 rounded-lg bg-orange-500 text-white">
               Book a session
             </BookServiceButton>
           </div>
@@ -37,7 +37,7 @@ export default function PricingAndPacks({ service }: { service: Service }) {
               <div className="font-semibold text-lg">{p.sessions} session{p.sessions > 1 ? 's' : ''}</div>
               <div className="text-sm text-neutral-600 mt-2">{p.description}</div>
               <div className="mt-4">
-                <BookServiceButton serviceId={service.id} className="px-3 py-2 rounded-lg bg-brand-500 text-white">
+                <BookServiceButton serviceId={service.id} className="px-3 py-2 rounded-lg bg-orange-500 text-white">
                   Book {p.title}
                 </BookServiceButton>
               </div>

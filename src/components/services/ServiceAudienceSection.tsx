@@ -22,7 +22,7 @@ export default function ServiceAudienceSection({ serviceId, section }: { service
             <div className="text-sm text-neutral-600">First session</div>
             <div className="font-semibold">{section.firstSession}</div>
             <div className="mt-3">
-              <BookServiceButton serviceId={serviceId} audience={section.key} className="px-4 py-2 rounded-lg bg-brand-500 text-white">
+              <BookServiceButton serviceId={serviceId} audience={section.key} className="px-4 py-2 rounded-lg bg-orange-500 text-white">
                 Book sample review
               </BookServiceButton>
             </div>

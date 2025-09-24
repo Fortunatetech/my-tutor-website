@@ -12,11 +12,11 @@ import PriceTag from "@/components/ui/PriceTag";
 export default function HomePage() {
   // curated featured services (order = priority on homepage)
   const featuredIds = [
+    "writing",
     "tutoring",
+    "administration",
     "programming",
     "career",
-    "resume",
-    "administration",
     "databases",
   ];
   const featured = featuredIds
@@ -24,7 +24,7 @@ export default function HomePage() {
     .filter(Boolean) as typeof SERVICES;
 
   // small set of ids we want to mark as "Popular"
-  const popularIds = new Set(["tutoring", "programming"]);
+  const popularIds = new Set(["tutoring", "writing", "administration"]);
 
   return (
     <>

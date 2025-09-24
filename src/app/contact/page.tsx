@@ -2,95 +2,94 @@
 'use client';
 
 import { useState } from 'react';
-import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
-import Modal from '@/components/ui/Modal'
-import { clientApi } from '@/lib/clientApi';
-import type { ContactForm } from '@/types';
+import BookServiceButton from '@/components/services/BookServiceButton';
 
 export default function ContactPage() {
-  const [form, setForm] = useState<ContactForm>({ name: '', email: '', message: '' });
-  const [sending, setSending] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successOpen, setSuccessOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleChange<K extends keyof ContactForm>(key: K, value: ContactForm[K]) {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSend(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true);
     setError(null);
-    setSending(true);
+
     try {
-      const res = await clientApi.post<{ success: boolean }>('/api/contact', form);
-      if (res.success) {
-        setSuccessOpen(true);
-        setForm({ name: '', email: '', message: '' });
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data && data.success) {
+        setSent(true);
+        setName('');
+        setEmail('');
+        setMessage('');
       } else {
-        setError('Submission failed — please try again.');
+        setError(data?.error || 'Failed to send. Try again later.');
       }
-    } catch (err: any) {
-      console.error('contact error', err);
-      setError(err?.body?.error || 'Server error — try again later.');
+    } catch (err) {
+      console.error(err);
+      setError('Server error. Please try again later.');
     } finally {
-      setSending(false);
+      setLoading(false);
     }
   }
 
   return (
     <section className="py-16">
-      <div className="container mx-auto px-6 lg:px-8 max-w-2xl">
-        <h1 className="text-3xl font-bold text-brand-900 mb-4">Contact & Booking</h1>
-        <p className="text-neutral-600 mb-6">
-          Send a message describing how I can help — I will respond within 24–48 hours.
-        </p>
+      <div className="container mx-auto px-6 lg:px-8 max-w-3xl">
+        <h1 className="text-3xl font-bold text-brand-900 mb-4">Contact</h1>
+        <p className="text-neutral-600 mb-6">Send a message or book a consultation — your choice.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Full name"
-            value={form.name}
-            onChange={(e) => handleChange('name', e.target.value)}
-            required
-          />
-          <Input
-            label="Email"
-            type="email"
-            value={form.email}
-            onChange={(e) => handleChange('email', e.target.value)}
-            required
-          />
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h2 className="text-xl font-semibold mb-3">Send a message</h2>
+            {sent ? (
+              <div className="p-4 bg-green-50 rounded">Thanks — your message was sent.</div>
+            ) : (
+              <form onSubmit={handleSend} className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Name</label>
+                  <input value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-3 border rounded-lg" required />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Email</label>
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-1 p-3 border rounded-lg" required />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} className="w-full mt-1 p-3 border rounded-lg" required />
+                </div>
 
-          <div className="flex flex-col">
-            <label className="text-neutral-900 font-medium">Message</label>
-            <textarea
-              value={form.message}
-              onChange={(e) => handleChange('message', e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-focus"
-              rows={6}
-              required
-            />
+                {error && <div className="text-sm text-red-600">{error}</div>}
+
+                <div className="flex justify-end">
+                  <button type="submit" disabled={loading} className="btn-primary">
+                    {loading ? 'Sending...' : 'Send message'}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
 
-          <div className="flex items-center gap-4">
-            <Button variant="primary" type="submit" className="inline-flex">
-              {sending ? 'Sending...' : 'Send Message'}
-            </Button>
-            <Button variant="secondary" href="/booking">
-              Book a Consultation
-            </Button>
-          </div>
+          <aside>
+            <h2 className="text-xl font-semibold mb-3">Book a consultation</h2>
+            <p className="text-neutral-600 mb-4">Prefer to talk? Book a free consultation — quick, focused, and we’ll agree next steps.</p>
 
-          {error && <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded">{error}</div>}
-        </form>
-      </div>
-
-      <Modal open={successOpen} onClose={() => setSuccessOpen(false)} title="Message sent">
-        <p className="text-neutral-900 mb-4">Thank you — I received your message and will reply within 24–48 hours.</p>
-        <div className="flex justify-end">
-          <Button variant="primary" onClick={() => setSuccessOpen(false)}>Close</Button>
+            {/* UPDATED: Book button opens modal (lead-capture) */}
+            <div>
+              <BookServiceButton serviceId="tutoring" className="px-4 py-3 rounded-lg bg-orange-500 text-white">
+                Book Free Consultation Here 
+              </BookServiceButton>
+            </div>
+          </aside>
         </div>
-      </Modal>
+      </div>
     </section>
   );
 }

@@ -4,12 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from '@/components/ThemeToggle';
 import { useState } from 'react';
-import { useBooking } from '@/components/booking/BookingProvider';
+import { useBooking } from '@/components/booking/BookingProvider'; // UPDATED: Use booking provider to open modal
 
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const { openBooking } = useBooking();
   const links = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
@@ -18,10 +17,14 @@ export default function Header() {
     { href: '/contact', label: 'Contact' },
   ];
 
+  const { openBooking } = useBooking(); // UPDATED: booking modal opener
+
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-white/60 dark:bg-black/50">
       <div className="container mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-brand-900 dark:text-white">TutorCoach</Link>
+        <Link href="/" className="text-2xl font-bold text-brand-900 dark:text-white">
+          TutorCoach
+        </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
           {links.map((l) => (
@@ -37,9 +40,14 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          {/* open booking modal instead of direct href */}
-          <button onClick={() => openBooking()} className="px-4 py-2 rounded-lg bg-orange-500 text-white">
-            Book Now
+
+          {/* UPDATED: Header button now opens Booking Modal (lead-capture) */}
+          <button
+            onClick={() => openBooking({})}
+            className="px-4 py-2 rounded-lg bg-orange-500 text-white"
+            aria-label="Book Free Consultation"
+          >
+            Book Free Consultation
           </button>
 
           <button onClick={() => setOpen(!open)} className="md:hidden p-2 rounded-lg bg-white/10 dark:bg-black/10">

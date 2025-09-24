@@ -6,6 +6,13 @@ import { useBooking } from './BookingProvider';
 import { useEffect, useState } from 'react';
 import { SERVICES } from '@/data/services';
 
+/**
+ * UPDATED: BookingModal
+ * - Keeps Cancel & Send buttons (per request).
+ * - After successful submission shows a "Schedule now" CTA linking to /booking?service=...
+ * - Comments added to show updated sections.
+ */
+
 export default function BookingModal() {
   const { isOpen, closeBooking, prefill } = useBooking();
 
@@ -14,6 +21,7 @@ export default function BookingModal() {
   const [service, setService] = useState(prefill?.service ?? SERVICES[0]?.id ?? '');
   const [audience, setAudience] = useState(prefill?.audience ?? '');
   const [pack, setPack] = useState(prefill?.pack ?? '');
+  const [preferredTime, setPreferredTime] = useState(prefill?.preferredTime ?? '');
   const [message, setMessage] = useState(prefill?.message ?? '');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
@@ -26,6 +34,7 @@ export default function BookingModal() {
       setService(prefill?.service ?? SERVICES[0]?.id ?? '');
       setAudience(prefill?.audience ?? '');
       setPack(prefill?.pack ?? '');
+      setPreferredTime(prefill?.preferredTime ?? '');
       setMessage(prefill?.message ?? '');
       setSuccess(null);
       setError(null);
@@ -57,19 +66,21 @@ export default function BookingModal() {
           service,
           audience: audience || null,
           pack: pack || null,
+          preferredTime: preferredTime || null,
           message: message.trim(),
         }),
       });
 
       const data = await res.json().catch(() => ({}));
       if (res.ok && data && data.success) {
-        setSuccess('Thanks — your booking request has been received. I will follow up within 24–48 hours.');
-        // optionally clear fields
+        setSuccess('Thanks — your booking request has been received. You will receive a confirmation email shortly.');
+        // Optionally clear fields
         setName('');
         setEmail('');
         setMessage('');
         setPack('');
         setAudience('');
+        setPreferredTime('');
       } else {
         setError(data?.error || 'Failed to submit booking. Please try again later.');
       }
@@ -86,9 +97,21 @@ export default function BookingModal() {
       {success ? (
         <div className="space-y-4">
           <p className="text-sm text-neutral-700">{success}</p>
-          <div className="flex justify-end">
-            <button onClick={closeBooking} className="btn-primary">Close</button>
+
+          {/* NEW: Scheduler CTA after successful submit */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              className="inline-block px-4 py-2 rounded-lg bg-brand-500 text-white text-center"
+              href={`/booking?service=${encodeURIComponent(service)}`}
+            >
+              Schedule now — pick a time
+            </a>
+
+            <button onClick={closeBooking} className="px-4 py-2 rounded-lg border">
+              Close
+            </button>
           </div>
+          {/* END NEW */}
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -171,6 +194,16 @@ export default function BookingModal() {
           )}
 
           <div>
+            <label className="text-sm font-medium">Preferred times (optional)</label>
+            <input
+              value={preferredTime}
+              onChange={(e) => setPreferredTime(e.target.value)}
+              className="w-full mt-1 p-3 border rounded-lg"
+              placeholder="e.g. Weekdays after 5pm, or next Monday morning"
+            />
+          </div>
+
+          <div>
             <label className="text-sm font-medium">Message (brief)</label>
             <textarea
               value={message}
@@ -184,6 +217,7 @@ export default function BookingModal() {
           {error && <div className="text-sm text-red-600">{error}</div>}
 
           <div className="flex items-center justify-end gap-3">
+            {/* Keep Cancel & Send buttons (per request) */}
             <button type="button" onClick={closeBooking} className="px-4 py-2 rounded-lg border">
               Cancel
             </button>

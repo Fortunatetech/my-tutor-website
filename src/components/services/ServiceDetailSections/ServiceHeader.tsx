@@ -47,7 +47,7 @@ export default function ServiceHeader({ service }: Props) {
             </div>
 
             <div className="mt-4">
-              <BookServiceButton serviceId={service.id} className="px-4 py-3 rounded-lg bg-brand-500 text-white">
+              <BookServiceButton serviceId={service.id} className="px-4 py-3 rounded-lg bg-orange-500 text-white">
                 Book consultation
               </BookServiceButton>
             </div>
