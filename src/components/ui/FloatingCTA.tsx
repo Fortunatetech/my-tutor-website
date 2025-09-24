@@ -1,8 +1,8 @@
 // src/components/ui/FloatingCTA.tsx
-'use client';
+"use client";
 
-import React from 'react';
-import { useBooking } from '@/components/booking/BookingProvider';
+import React from "react";
+import { useBooking } from "@/components/booking/BookingProvider";
 
 /**
  * UPDATED: Floating CTA
@@ -16,15 +16,14 @@ export default function FloatingCTA() {
     <div className="fixed bottom-6 right-6 z-50">
       <button
         onClick={() => openBooking({})}
-        className="flex items-center gap-3 px-4 py-3 rounded-full shadow-lg bg-brand-500 text-white"
+        className="flex items-center gap-3 px-4 py-3 rounded-full border border-neutral-500 bg-black/50 shadow-lg backdrop-blur-lg cursor-pointer "
         aria-label="Book free consultation"
       >
-        <span className="font-semibold">Book Free Consult</span>
+        <span className="font-semibold text-white mix-blend-difference">Book Free Consult</span>
       </button>
     </div>
   );
 }
-
 
 // src/components/ui/FloatingCTA.tsx
 // "use client";

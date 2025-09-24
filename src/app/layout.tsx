@@ -10,7 +10,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-
 export const metadata = {
   title: "TutorCoach",
   description: "Personal Tutor & Coach – Academic, Tech & Career Services",

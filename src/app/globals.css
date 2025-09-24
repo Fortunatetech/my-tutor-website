@@ -80,12 +80,6 @@ h1 {
   margin-right: auto;
 }
 
-/* focus */
-:focus {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(15, 181, 166, 0.12);
-}
-
 /* @import 'tailwindcss'; */
 
 /* CSS variables + Tailwind layers */
