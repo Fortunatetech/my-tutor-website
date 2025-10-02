@@ -15,7 +15,7 @@ type Props = {
  * Example Calendly embed: https://calendly.com/your-username/30min
  */
 
-const CALENDLY_BASE = process.env.NEXT_PUBLIC_CALENDLY_URL || 'https://calendly.com/your-username/30min';
+const CALENDLY_BASE = process.env.NEXT_PUBLIC_CALENDLY_URL || 'https://calendly.com/ayodeleayodeji250/30min';
 
 export default function EmbeddedScheduler({ serviceId }: Props) {
   // Optionally append service param to calendly URL for context or to prefill questions:

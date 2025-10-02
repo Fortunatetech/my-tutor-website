@@ -1,83 +1,162 @@
 // src/app/services/[id]/page.tsx
+// UPDATED - premium layout composing new components
 import { notFound } from 'next/navigation';
+import React from 'react';
 import { SERVICES } from '@/data/services';
-import ServiceHeader from '@/components/services/ServiceDetailSections/ServiceHeader';
-import AudienceChooser from '@/components/services/AudienceChooser';
-import ServiceAudienceSection from '@/components/services/ServiceAudienceSection';
-import LessonPlan from '@/components/services/ServiceDetailSections/LessonPlan';
-import WhoIsThisFor from '@/components/services/ServiceDetailSections/WhoIsThisFor';
-import PricingAndPacks from '@/components/services/ServiceDetailSections/PricingAndPacks';
-import SuccessStories from '@/components/services/ServiceDetailSections/SuccessStories';
-import ScrollReveal from '@/components/ScrollReveal';
-import Accordion from '@/components/ui/Accordion';
-import { FAQ_BY_SERVICE } from '../faq-by-service';
+import ServiceHeaderPremium from '@/components/services/ServiceHeaderPredium';
+import ServiceAudienceTabs from '@/components/services/ServiceAudienceTabs';
+import ServiceDetailCards from '@/components/services/ServiceDetailCards';
+import PricingStrip from '@/components/services/PricingStrip';
+import PackCardsPremium from '@/components/services/PackCardsPremium';
+import SuccessStories from '@/components/services/SuccessStories';
+import FAQAccordionPremium from '@/components/services/FAQAccordingPremium';
 
-type Props = {
-  params: { id: string } | any;
-};
+interface Props {
+  params: { id: string };
+}
 
-export default async function ServiceDetail({ params }: Props) {
-  const p = (await params) as { id: string };
-  const id = p?.id;
+export default function ServiceDetail({ params }: Props) {
+  const id = String(params.id);
   const service = SERVICES.find((s) => s.id === id);
-
   if (!service) return notFound();
-
-  const faqs = (FAQ_BY_SERVICE as Record<string, { q: string; a: string }[]>)[service.id] ?? [];
 
   return (
     <section className="py-16">
-      <div className="container mx-auto px-6 lg:px-8 max-w-5xl">
-        {/* Header: title + subservices + price/book (top-right) */}
-        <ScrollReveal>
-          <ServiceHeader service={service} />
-        </ScrollReveal>
+      <div className="container mx-auto px-6 lg:px-8 max-w-6xl">
+        {/* Premium header */}
+        <ServiceHeaderPremium
+          id={service.id}
+          title={service.title}
+          subtitle={service.subservices?.slice(0, 3).join(' • ')}
+          desc={service.desc}
+          heroMetric={service.heroMetric}
+          price={service.price}
+          priceOriginal={service.priceOriginal}
+        />
 
-        {/* Audience chooser (chips) — anchors to sections */}
-        <AudienceChooser service={service} initial={service.audienceSections?.[0]?.key} />
+        {/* Audience tabs */}
+        {service.audienceSections && (
+          <div className="mb-10">
+            <ServiceAudienceTabs audiences={service.audienceSections} serviceId={service.id} />
+          </div>
+        )}
 
-        {/* Audience specific sections (Kids / Students / Professionals) */}
-        {service.audienceSections?.map((sec) => (
-          <ScrollReveal key={sec.key}>
-            <ServiceAudienceSection serviceId={service.id} section={sec} />
-          </ScrollReveal>
-        ))}
+        {/* Detail cards */}
+        <div className="mb-10">
+          <ServiceDetailCards cover={service.whatWeCover ?? []} lessonPlan={service.lessonPlan ?? []} outcomes={service.outcomes ?? service.whatSetsApart ?? []} />
+        </div>
 
-        {/* A typical lesson plan */}
-        <ScrollReveal delay={0.06}>
-          <LessonPlan plan={service.lessonPlan} />
-        </ScrollReveal>
+        {/* Pricing strip */}
+        <div className="mb-10">
+          <PricingStrip original={service.priceOriginal} current={service.price} />
+        </div>
 
-        {/* Who is this lesson for? */}
-        <ScrollReveal delay={0.12}>
-          <WhoIsThisFor items={service.audience} />
-        </ScrollReveal>
-
-        {/* Pricing & packs */}
-        <ScrollReveal delay={0.18}>
-          <PricingAndPacks service={service} />
-        </ScrollReveal>
+        {/* Packs */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold text-brand-900 mb-4">Suggested session packs</h2>
+          <PackCardsPremium serviceId={service.id} packs={service.packs ?? []} />
+        </div>
 
         {/* Success stories */}
-        <ScrollReveal delay={0.22}>
-          <SuccessStories stories={service.successStories} />
-        </ScrollReveal>
+        <div className="mb-10">
+          <SuccessStories stories={service.successStories ?? []} />
+        </div>
 
         {/* FAQ */}
-        <ScrollReveal delay={0.26}>
-          <div className="mb-10">
-            {faqs.length > 0 && (
-              <>
-                <h3 className="text-xl font-semibold text-brand-900 mb-4">Frequently asked</h3>
-                <Accordion items={faqs.map((f) => ({ title: f.q, content: f.a }))} />
-              </>
-            )}
-          </div>
-        </ScrollReveal>
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold text-brand-900 mb-4">Frequently asked</h2>
+          <FAQAccordionPremium items={service.faq ?? []} />
+        </div>
       </div>
     </section>
   );
 }
+
+
+
+
+
+
+// src/app/services/[id]/page.tsx
+// import { notFound } from 'next/navigation';
+// import { SERVICES } from '@/data/services';
+// import ServiceHeader from '@/components/services/ServiceDetailSections/ServiceHeader';
+// import AudienceChooser from '@/components/services/AudienceChooser';
+// import ServiceAudienceSection from '@/components/services/ServiceAudienceSection';
+// import LessonPlan from '@/components/services/ServiceDetailSections/LessonPlan';
+// import WhoIsThisFor from '@/components/services/ServiceDetailSections/WhoIsThisFor';
+// import PricingAndPacks from '@/components/services/ServiceDetailSections/PricingAndPacks';
+// import SuccessStories from '@/components/services/ServiceDetailSections/SuccessStories';
+// import ScrollReveal from '@/components/ScrollReveal';
+// import Accordion from '@/components/ui/Accordion';
+// import { FAQ_BY_SERVICE } from '../faq-by-service';
+
+// type Props = {
+//   params: { id: string } | any;
+// };
+
+// export default async function ServiceDetail({ params }: Props) {
+//   const p = (await params) as { id: string };
+//   const id = p?.id;
+//   const service = SERVICES.find((s) => s.id === id);
+
+//   if (!service) return notFound();
+
+//   const faqs = (FAQ_BY_SERVICE as Record<string, { q: string; a: string }[]>)[service.id] ?? [];
+
+//   return (
+//     <section className="py-16">
+//       <div className="container mx-auto px-6 lg:px-8 max-w-5xl">
+//         {/* Header: title + subservices + price/book (top-right) */}
+//         <ScrollReveal>
+//           <ServiceHeader service={service} />
+//         </ScrollReveal>
+
+//         {/* Audience chooser (chips) — anchors to sections */}
+//         <AudienceChooser service={service} initial={service.audienceSections?.[0]?.key} />
+
+//         {/* Audience specific sections (Kids / Students / Professionals) */}
+//         {service.audienceSections?.map((sec) => (
+//           <ScrollReveal key={sec.key}>
+//             <ServiceAudienceSection serviceId={service.id} section={sec} />
+//           </ScrollReveal>
+//         ))}
+
+//         {/* A typical lesson plan */}
+//         <ScrollReveal delay={0.06}>
+//           <LessonPlan plan={service.lessonPlan} />
+//         </ScrollReveal>
+
+//         {/* Who is this lesson for? */}
+//         <ScrollReveal delay={0.12}>
+//           <WhoIsThisFor items={service.audience} />
+//         </ScrollReveal>
+
+//         {/* Pricing & packs */}
+//         <ScrollReveal delay={0.18}>
+//           <PricingAndPacks service={service} />
+//         </ScrollReveal>
+
+//         {/* Success stories */}
+//         <ScrollReveal delay={0.22}>
+//           <SuccessStories stories={service.successStories} />
+//         </ScrollReveal>
+
+//         {/* FAQ */}
+//         <ScrollReveal delay={0.26}>
+//           <div className="mb-10">
+//             {faqs.length > 0 && (
+//               <>
+//                 <h3 className="text-xl font-semibold text-brand-900 mb-4">Frequently asked</h3>
+//                 <Accordion items={faqs.map((f) => ({ title: f.q, content: f.a }))} />
+//               </>
+//             )}
+//           </div>
+//         </ScrollReveal>
+//       </div>
+//     </section>
+//   );
+// }
 
 
 
